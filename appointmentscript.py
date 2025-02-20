@@ -1,4 +1,5 @@
 import csv
+import sys
 
 
 # EAB columns include
@@ -19,9 +20,9 @@ with open('input.csv', mode = 'r') as file:
 		student_data.append(lines)
 
 # creating csv header
-output_data = [["Index", "First Name", "Last Name","Student ID", 
-				"Major", "Appointment Date","Start Time","Appointment Comment"
-				,"Cancelled?","Course Agreement Title","Prepped?"]]
+output_data = [["Index", "First Name", "Last Name","Email","Student ID", 
+				"Major", "Date","Start Time","Comment"
+				,"Cancelled?","Course Agreement Title","Prepped?","Email","Hold","Box","EAB","Name"]]
 
 del student_data[0] # removing header from EAB
 
@@ -38,16 +39,17 @@ for student in student_data: # loops through all students
 	else: # they didnt cancel
 		lastName = student[0].split(", ")[0]
 		firstName = student[0].split(", ")[1]
-		ID = student[1]
-		major = student[2]
-		date = student[3]
-		time = student[4]
-		comment = student[5]
-		cancelled = student[6]
+		email = student[1]
+		ID = student[2]
+		major = student[3]
+		date = student[4]
+		time = student[5]
+		comment = student[6]
+		cancelled = student[7]
 		cat = str(firstName+"_"+lastName.split()[0]+"_"+ID+"_FA25")
 
-		output_data.append([i,firstName,lastName,ID,major,date,time,comment
-							,cancelled,cat])
+		output_data.append([i,firstName,lastName,email,ID,major,date,time,comment
+							,cancelled,cat,"","","","","",student[0]])
 
 		i+=1
 
@@ -58,18 +60,21 @@ while i <=13:
 for student in cancelled_students:
 	lastName = student[0].split(", ")[0]
 	firstName = student[0].split(", ")[1]
-	ID = student[1]
-	major = student[2]
-	date = student[3]
-	time = student[4]
-	comment = student[5]
-	cancelled = student[6]
+	email = student[1]
+	ID = student[2]
+	major = student[3]
+	date = student[4]
+	time = student[5]
+	comment = student[6]
+	cancelled = student[7]
 	cat = str(firstName+"_"+lastName.split()[0]+"_"+ID+"_FA25")
 
-	output_data.append([i,firstName,lastName,ID,major,date,time,comment
-						,cancelled,cat])
+	output_data.append([i,firstName,lastName,email,ID,major,date,time,comment
+						,cancelled,cat,"","","","","",student[0]])
 
 
-with open('output.csv','w',newline='') as csvfile:
+output_file_name = "One on One Roster " + sys.argv[1] +"-" + sys.argv[2]+ ".csv"
+
+with open(output_file_name,'w',newline='') as csvfile:
 	writer = csv.writer(csvfile)
 	writer.writerows(output_data)
